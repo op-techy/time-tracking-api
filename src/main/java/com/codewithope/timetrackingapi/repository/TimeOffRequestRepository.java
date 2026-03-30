@@ -11,6 +11,4 @@ import java.util.UUID;
 public interface TimeOffRequestRepository extends JpaRepository<TimeOffRequest, UUID> {
     List<TimeOffRequest> findByApprovalStatus(ApprovalStatus approvalStatus);
     List<TimeOffRequest> findByEmployee(User employee);
-
-    List<TimeOffRequest> getTimeOffRequestsByEmployee_Id(UUID employeeId);
 }

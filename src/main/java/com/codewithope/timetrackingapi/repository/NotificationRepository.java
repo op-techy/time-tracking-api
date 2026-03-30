@@ -9,8 +9,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface NotificationRepository extends JpaRepository<Notification, UUID> {
-
-    List<Notification> findByUser_Id(UUID userId);
-
-    List<Notification> findByUser_IdAndIsRead(UUID userId, boolean b);
+    List<Notification> findByUserAndIsRead(User user, boolean isRead);
 }
