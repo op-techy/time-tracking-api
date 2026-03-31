@@ -12,4 +12,6 @@ public interface SessionService {
     void clockOut(UUID sessionId);
     List<Session> getSession(User user);
     Optional<Session> getActiveSession(User user);
+
+    Optional<Session> findSessionById(UUID sessionId);
 }

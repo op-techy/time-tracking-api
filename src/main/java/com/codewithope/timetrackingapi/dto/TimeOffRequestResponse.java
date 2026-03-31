@@ -16,10 +16,6 @@ public class TimeOffRequestResponse {
 
     private UUID id;
 
-    private UUID employeeId;
-
-    private UUID approvedById;
-
     private String reason;
 
     private LocalDate startDate;
@@ -27,6 +23,10 @@ public class TimeOffRequestResponse {
     private LocalDate endDate;
 
     private ApprovalStatus approvalStatus;
+
+    private UUID employeeId;
+
+    private UUID approvedById;
 
     private Instant createdAt;
 

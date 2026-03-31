@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Optional<User> findById(UUID id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }

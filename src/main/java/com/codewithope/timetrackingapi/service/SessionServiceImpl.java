@@ -43,4 +43,9 @@ public class SessionServiceImpl implements SessionService{
     public Optional<Session> getActiveSession(User user) {
         return sessionRepository.findByUserAndIsActive(user,true);
     }
+
+    @Override
+    public Optional<Session> findSessionById(UUID sessionId) {
+        return sessionRepository.findById(sessionId);
+    }
 }

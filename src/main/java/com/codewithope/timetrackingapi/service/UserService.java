@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface UserService {
     User createUser(CreateUserRequest request);
+    Optional<User> findById(UUID id);
     void deleteUser(UUID id);
     void updateUserRole(UUID id, Role role);
     void updateUserPassword(UUID id, String newPassword);

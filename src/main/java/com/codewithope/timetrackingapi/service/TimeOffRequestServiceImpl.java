@@ -1,5 +1,6 @@
 package com.codewithope.timetrackingapi.service;
 
+import com.codewithope.timetrackingapi.dto.CreateTimeOffRequest;
 import com.codewithope.timetrackingapi.entity.ApprovalStatus;
 import com.codewithope.timetrackingapi.entity.TimeOffRequest;
 import com.codewithope.timetrackingapi.entity.User;
@@ -20,7 +21,12 @@ public class TimeOffRequestServiceImpl implements TimeOffRequestService{
     private final UserRepository userRepository;
 
     @Override
-    public TimeOffRequest submitTimeOffRequest(TimeOffRequest timeOffRequest) {
+    public TimeOffRequest submitTimeOffRequest(CreateTimeOffRequest request) {
+        TimeOffRequest timeOffRequest = new TimeOffRequest();
+        timeOffRequest.setReason(request.getReason());
+        timeOffRequest.setStartDate(request.getStartDate());
+        timeOffRequest.setEndDate(request.getEndDate());
+        timeOffRequest.setApprovalStatus(ApprovalStatus.PENDING);
         return timeOffRequestRepository.save(timeOffRequest);
     }
 
