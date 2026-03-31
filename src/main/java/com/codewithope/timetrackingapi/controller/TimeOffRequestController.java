@@ -2,13 +2,16 @@ package com.codewithope.timetrackingapi.controller;
 
 import com.codewithope.timetrackingapi.dto.CreateTimeOffRequest;
 import com.codewithope.timetrackingapi.dto.TimeOffRequestResponse;
+import com.codewithope.timetrackingapi.entity.ApprovalStatus;
 import com.codewithope.timetrackingapi.entity.TimeOffRequest;
 import com.codewithope.timetrackingapi.service.TimeOffRequestService;
+import com.codewithope.timetrackingapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,15 +28,29 @@ public class TimeOffRequestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    @PutMapping("/{id}/approve")
-//    public ResponseEntity<Void> approveTimeOffRequest(@PathVariable UUID id) {
-//
-//    }
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<Void> approveTimeOffRequest(@PathVariable UUID id, @RequestBody UUID managerId) {
+        timeOffRequestService.approveTimeOffRequest(id, managerId);
+        return ResponseEntity.ok().build();
+    }
 
-//    @PutMapping("/{id}/reject")
-//    public ResponseEntity<Void> rejectTimeOffRequest(@PathVariable UUID id) {
-//
-//    }
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<Void> rejectTimeOffRequest(@PathVariable UUID id, @RequestBody UUID managerId) {
+        timeOffRequestService.rejectTimeOffRequest(id, managerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{employeeId}/employee")
+    public ResponseEntity<List<TimeOffRequestResponse>> getTimeOffRequestsByEmployee(@PathVariable UUID employeeId) {
+        List<TimeOffRequest> timeOffRequests = timeOffRequestService.getTimeOffRequestByEmployee(employeeId);
+        return ResponseEntity.ok(timeOffRequests.stream().map(this::mapToResponse).toList());
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<TimeOffRequestResponse>> getTimeOffRequestsByStatus(@PathVariable ApprovalStatus status) {
+        List<TimeOffRequest> timeOffRequests = timeOffRequestService.getTimeOffRequestByStatus(status);
+        return ResponseEntity.ok(timeOffRequests.stream().map(this::mapToResponse).toList());
+    }
 
     private TimeOffRequestResponse mapToResponse(TimeOffRequest timeOffRequest) {
         return TimeOffRequestResponse.builder()
@@ -43,7 +60,7 @@ public class TimeOffRequestController {
                 .endDate(timeOffRequest.getEndDate())
                 .approvalStatus(timeOffRequest.getApprovalStatus())
                 .employeeId(timeOffRequest.getEmployee().getId())
-                .approvedById(timeOffRequest.getApprovedBy().getId())
+                .approvedById(timeOffRequest.getApprovedBy() != null ? timeOffRequest.getApprovedBy().getId() : null)
                 .build();
     }
 

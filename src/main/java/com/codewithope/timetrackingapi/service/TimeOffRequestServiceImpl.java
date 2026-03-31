@@ -22,11 +22,16 @@ public class TimeOffRequestServiceImpl implements TimeOffRequestService{
 
     @Override
     public TimeOffRequest submitTimeOffRequest(CreateTimeOffRequest request) {
+        User employee = userRepository.findById(request.getEmployeeId())
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
         TimeOffRequest timeOffRequest = new TimeOffRequest();
         timeOffRequest.setReason(request.getReason());
         timeOffRequest.setStartDate(request.getStartDate());
         timeOffRequest.setEndDate(request.getEndDate());
+        timeOffRequest.setEmployee(employee);
         timeOffRequest.setApprovalStatus(ApprovalStatus.PENDING);
+
         return timeOffRequestRepository.save(timeOffRequest);
     }
 
