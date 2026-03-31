@@ -1,5 +1,6 @@
 package com.codewithope.timetrackingapi.service;
 
+import com.codewithope.timetrackingapi.dto.CreateUserRequest;
 import com.codewithope.timetrackingapi.entity.Role;
 import com.codewithope.timetrackingapi.entity.User;
 import com.codewithope.timetrackingapi.repository.UserRepository;
@@ -20,8 +21,14 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public User createUser(User user) {
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+    public User createUser(CreateUserRequest request) {
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setUserName(request.getUserName());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+        user.setActive(true);
         return userRepository.save(user);
     }
 
