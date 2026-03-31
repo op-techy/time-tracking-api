@@ -1,5 +1,5 @@
 package com.codewithope.timetrackingapi.entity;
 
 public enum TaskStatus {
-    STARTED, IN_PROGRESS, COMPLETED, ON_HOLD
+    NOT_STARTED, STARTED, IN_PROGRESS, COMPLETED, ON_HOLD
 }

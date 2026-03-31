@@ -5,7 +5,6 @@ import com.codewithope.timetrackingapi.dto.TimeOffRequestResponse;
 import com.codewithope.timetrackingapi.entity.ApprovalStatus;
 import com.codewithope.timetrackingapi.entity.TimeOffRequest;
 import com.codewithope.timetrackingapi.service.TimeOffRequestService;
-import com.codewithope.timetrackingapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
