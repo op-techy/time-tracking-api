@@ -6,6 +6,7 @@ import com.codewithope.timetrackingapi.entity.Role;
 import com.codewithope.timetrackingapi.entity.User;
 import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping ("/createuser")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         User user = userService.createUser(request);
         UserResponse response = mapToResponse(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
