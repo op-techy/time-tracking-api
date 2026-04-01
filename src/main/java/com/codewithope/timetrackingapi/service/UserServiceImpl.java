@@ -3,6 +3,7 @@ package com.codewithope.timetrackingapi.service;
 import com.codewithope.timetrackingapi.dto.CreateUserRequest;
 import com.codewithope.timetrackingapi.entity.Role;
 import com.codewithope.timetrackingapi.entity.User;
+import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUserRole(UUID id, Role role) {
       User user = userRepository.findById(id)
-              .orElseThrow(() -> new RuntimeException("User not found"));
+              .orElseThrow(() -> new ResourceNotFoundException("User not found"));
       user.setRole(role);
       userRepository.save(user);
 
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUserPassword(UUID id, String newPassword) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }

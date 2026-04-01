@@ -3,6 +3,7 @@ package com.codewithope.timetrackingapi.service;
 import com.codewithope.timetrackingapi.entity.Notification;
 import com.codewithope.timetrackingapi.entity.NotificationSeverity;
 import com.codewithope.timetrackingapi.entity.User;
+import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.repository.NotificationRepository;
 import com.codewithope.timetrackingapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public Notification createNotification(UUID userId, String message, NotificationSeverity severity) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Notification notification = new Notification();
         notification.setUser(user);
         notification.setMessage(message);
@@ -42,7 +43,7 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public void markNotificationAsRead(UUID notificationId) {
         Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new RuntimeException("Notification not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Notification not found"));
         notification.setRead(true);
         notificationRepository.save(notification);
     }

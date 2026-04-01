@@ -2,6 +2,7 @@ package com.codewithope.timetrackingapi.service;
 
 import com.codewithope.timetrackingapi.entity.Session;
 import com.codewithope.timetrackingapi.entity.User;
+import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public void clockOut(UUID sessionId) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(()-> new RuntimeException("Session not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Session not found"));
         session.setClockOut(Instant.now());
         session.setActive(false);
         sessionRepository.save(session);

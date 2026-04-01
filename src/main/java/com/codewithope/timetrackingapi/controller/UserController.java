@@ -4,6 +4,7 @@ import com.codewithope.timetrackingapi.dto.CreateUserRequest;
 import com.codewithope.timetrackingapi.dto.UserResponse;
 import com.codewithope.timetrackingapi.entity.Role;
 import com.codewithope.timetrackingapi.entity.User;
+import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findUserById(@PathVariable UUID id) {
         User user = userService.findById(id)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
         UserResponse response = mapToResponse(user);
         return ResponseEntity.ok(response);
     }

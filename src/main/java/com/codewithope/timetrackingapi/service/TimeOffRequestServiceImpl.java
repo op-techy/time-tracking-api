@@ -4,6 +4,7 @@ import com.codewithope.timetrackingapi.dto.CreateTimeOffRequest;
 import com.codewithope.timetrackingapi.entity.ApprovalStatus;
 import com.codewithope.timetrackingapi.entity.TimeOffRequest;
 import com.codewithope.timetrackingapi.entity.User;
+import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.repository.TimeOffRequestRepository;
 import com.codewithope.timetrackingapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class TimeOffRequestServiceImpl implements TimeOffRequestService{
     @Override
     public TimeOffRequest submitTimeOffRequest(CreateTimeOffRequest request) {
         User employee = userRepository.findById(request.getEmployeeId())
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
         TimeOffRequest timeOffRequest = new TimeOffRequest();
         timeOffRequest.setReason(request.getReason());
@@ -37,10 +38,10 @@ public class TimeOffRequestServiceImpl implements TimeOffRequestService{
     @Override
     public void approveTimeOffRequest(UUID requestId, UUID managerId) {
         TimeOffRequest timeOffRequest = timeOffRequestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Time off request not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Time off request not found"));
         timeOffRequest.setApprovalStatus(ApprovalStatus.APPROVED);
         User approvedBy = userRepository.findById(managerId)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Manager not found"));
         timeOffRequest.setApprovedBy(approvedBy);
         timeOffRequestRepository.save(timeOffRequest);
     }
@@ -48,10 +49,10 @@ public class TimeOffRequestServiceImpl implements TimeOffRequestService{
     @Override
     public void rejectTimeOffRequest(UUID requestId, UUID managerId) {
         TimeOffRequest timeOffRequest = timeOffRequestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Time off request not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Time off request not found"));
         timeOffRequest.setApprovalStatus(ApprovalStatus.REJECTED);
         User approvedBy = userRepository.findById(managerId)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Manager not found"));
         timeOffRequest.setApprovedBy(approvedBy);
         timeOffRequestRepository.save(timeOffRequest);
     }

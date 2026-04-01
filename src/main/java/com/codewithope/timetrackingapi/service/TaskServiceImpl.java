@@ -3,6 +3,7 @@ package com.codewithope.timetrackingapi.service;
 import com.codewithope.timetrackingapi.entity.Session;
 import com.codewithope.timetrackingapi.entity.Task;
 import com.codewithope.timetrackingapi.entity.TaskStatus;
+import com.codewithope.timetrackingapi.exception.ResourceNotFoundException;
 import com.codewithope.timetrackingapi.repository.SessionRepository;
 import com.codewithope.timetrackingapi.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public Task createTask(UUID sessionId, String taskName) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
         Task task = new Task();
         task.setName(taskName);
         task.setSession(session);
@@ -33,7 +34,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public void updateTaskStatus(UUID taskId, TaskStatus taskStatus) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         task.setStatus(taskStatus);
         taskRepository.save(task);
     }
@@ -41,7 +42,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public void setEndTime(UUID taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         task.setEndTime(Instant.now());
         task.setStatus(TaskStatus.COMPLETED);
         taskRepository.save(task);
@@ -55,7 +56,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public void deleteTask(UUID taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         taskRepository.delete(task);
     }
 }
